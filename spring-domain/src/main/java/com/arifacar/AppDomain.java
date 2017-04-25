@@ -1,4 +1,4 @@
-package com.example;
+package com.arifacar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,12 +6,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AppSoap {
+public class AppDomain {
 
-	private static final Logger log = LoggerFactory.getLogger(AppSoap.class);
+	private static final Logger log = LoggerFactory.getLogger(AppDomain.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(AppSoap.class);
-
+		SpringApplication.run(AppDomain.class);
 	}
+
 }

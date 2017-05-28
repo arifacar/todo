@@ -1,8 +1,10 @@
-package com.arifacar.domain.model;
+package com.arifacar.domain.model.common;
+import com.arifacar.domain.model.BaseEntity;
+
 import javax.persistence.Entity;
 
 @Entity
-public class EnumValue {
+public class EnumValue extends BaseEntity{
 
     private String name;
 

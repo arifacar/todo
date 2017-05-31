@@ -13,7 +13,6 @@ public class EnumRestController extends BaseController {
 	public EnumValue findValueByCategoryIdAndValueId(
 			@RequestParam("categoryId") Long categoryId,
 			@RequestParam("valueId") Long valueId) {
-
 		return new EnumValue();
 	}
 

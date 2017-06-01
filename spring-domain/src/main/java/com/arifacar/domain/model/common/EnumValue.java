@@ -12,6 +12,12 @@ public class EnumValue extends BaseEntity{
 
     private Long orderNo;
 
+    public EnumValue(String name, String value, Long orderNo) {
+        this.name = name;
+        this.value = value;
+        this.orderNo = orderNo;
+    }
+
     public String getName() {
         return name;
     }

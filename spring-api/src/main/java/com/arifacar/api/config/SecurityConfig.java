@@ -1,4 +1,4 @@
-package com.arifacar.api.config;
+/* package com.arifacar.api.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,3 +28,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("user").password("password").roles("USER");
     }
 }
+*/

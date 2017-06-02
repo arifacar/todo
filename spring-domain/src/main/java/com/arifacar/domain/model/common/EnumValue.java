@@ -1,16 +1,22 @@
 package com.arifacar.domain.model.common;
+
 import com.arifacar.domain.model.BaseEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-public class EnumValue extends BaseEntity{
+@Table(name = "T_ENUM_VALUE")
+public class EnumValue extends BaseEntity {
 
     private String name;
 
     private String value;
 
     private Long orderNo;
+
+    public EnumValue() {
+    }
 
     public EnumValue(String name, String value, Long orderNo) {
         this.name = name;

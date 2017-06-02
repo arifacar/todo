@@ -61,13 +61,6 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.195</version>
-        </dependency>
-
-
 
         <!-- Testing -->
 
@@ -110,7 +103,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.example</groupId>
+            <groupId>spring-common</groupId>
             <artifactId>spring-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

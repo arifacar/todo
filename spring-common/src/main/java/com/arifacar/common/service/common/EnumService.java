@@ -11,7 +11,6 @@ public class EnumService {
     @Autowired
     private EnumRepository enumRepository;
 
-
     public EnumValue save(EnumValue enumValue) {
         EnumValue persistedEnumValue = null;
 

@@ -23,11 +23,9 @@ public class UserService {
         return user;
     }
 
-    /*
     public List<User> findAll() {
         List<User> users = userRepository.findAll();
         users.sort(Comparator.comparing(User::getUsername));
         return users;
     }
-    */
 }

@@ -1,5 +1,6 @@
 package com.arifacar.api;
 
+import com.arifacar.domain.model.constants.Constants;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -11,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @Configuration
-@ComponentScan("com.arifacar")
+@ComponentScan(Constants.JAVAMASTER_PACKAGE)
 public class AppApi extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

@@ -1,6 +1,12 @@
 package com.arifacar.domain.model;
 
-import javax.persistence.*;
+import lombok.Data;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
 /**
  * Entity sınıflarınızda orta özellikler var ise bu özellikleri her
@@ -11,19 +17,11 @@ import javax.persistence.*;
  */
 
 @MappedSuperclass
-public class BaseEntity {
+@Data
+public abstract class BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ENTITY_SEQ")
-    @SequenceGenerator(name = "ENTITY_SEQ", sequenceName = "ENTITY_SEQUENCE", initialValue = 1, allocationSize = 10)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
 }

@@ -7,6 +7,7 @@ public class Constants {
         throw new IllegalStateException(ErrorConstants.UTILITY_CLASS);
     }
 
+
     public static final String APP_NAME = "JavaMaster.";
     public static final String JAVAMASTER_PACKAGE = "com.arifacar";
 
@@ -21,4 +22,7 @@ public class Constants {
     public static final String TC_IGNORE_ENDPOINT = "javamaster-ignore-endpoint";
     public static final String TC_IGNORE_MASKING_WS = "javamaster-ignore-masking-ws";
     public static final String TC_IGNORE_MASKING_REST = "javamaster-ignore-masking-rest";
+    public static final long ONE_HOUR_AS_MS = 86400000000L;
+
+    public static final String PAGESIZE_COMMON = "pagesize.common";
 }

@@ -1,4 +1,4 @@
-package com.arifacar.common.exception;
+package com.arifacar.service.exception;
 
 
 public class EntityNotFoundException extends RuntimeException {

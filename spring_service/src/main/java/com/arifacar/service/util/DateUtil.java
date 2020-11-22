@@ -1,4 +1,4 @@
-package com.arifacar.common.util;
+package com.arifacar.service.util;
 
 
 import java.text.DateFormat;

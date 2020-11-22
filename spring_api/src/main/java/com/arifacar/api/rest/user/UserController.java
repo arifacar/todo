@@ -1,7 +1,7 @@
 package com.arifacar.api.rest.user;
 
 import com.arifacar.api.rest.common.BaseController;
-import com.arifacar.common.service.user.UserService;
+import com.arifacar.service.user.UserService;
 import com.arifacar.domain.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

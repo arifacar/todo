@@ -6,9 +6,11 @@ import com.arifacar.domain.model.constants.ResponseMessages;
 import com.arifacar.domain.model.generic.GenericInfoResponse;
 import com.arifacar.domain.model.security.LoginRequest;
 import com.arifacar.domain.model.user.User;
+import com.arifacar.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,11 +29,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final CustomUserDetailsService customUserDetailsService;
 
+    private UserService userService;
     private final String TOKEN_SECRET = "h4of9eh48vmg02nfu30v27yen295hfj65";
 
     public AuthenticationFilter(AuthenticationManager authenticationManager,
-                                CustomUserDetailsService customUserDetailsService) {
+                                CustomUserDetailsService customUserDetailsService, UserService userService) {
         this.customUserDetailsService = customUserDetailsService;
+        this.userService = userService;
         super.setAuthenticationManager(authenticationManager);
     }
 
@@ -61,12 +65,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         UserAdapter userDto = (UserAdapter) customUserDetailsService.loadUserByUsername(userName);
 
         String token = Jwts.builder()
-                .setSubject(String.valueOf(userDto.getUsername()))
+                .setSubject(userDto.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + Constants.ONE_HOUR_AS_MS))
                 .signWith(SignatureAlgorithm.HS512, TOKEN_SECRET)
                 .compact();
 
         res.addHeader("Token", token);
+
+        userService.saveLoginInfo(token, req.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER), userDto.getUser().getId());
 
         res.getWriter().write(new ObjectMapper().writeValueAsString(getUserGenericInfoResponse(
                 userDto.getUser(), token)));

@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,6 +129,15 @@ public class UserService extends BaseService {
     @Transactional
     public LoginInfo saveUserLoginInfo(LoginInfo loginInfo) {
         return loginInfoRepository.save(loginInfo);
+    }
+
+    public LoginInfo saveLoginInfo(String token, String deviceInfo, Long userId) {
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setAuthToken(token);
+        loginInfo.setDate(new Timestamp(System.currentTimeMillis()));
+        loginInfo.setDeviceInfo(deviceInfo);
+        loginInfo.setUserId(userId);
+        return saveUserLoginInfo(loginInfo);
     }
 
 }

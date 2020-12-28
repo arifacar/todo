@@ -107,6 +107,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        return new AuthenticationFilter(authenticationManager(), userDetailsService);
+        return new AuthenticationFilter(authenticationManager(), userDetailsService, userService);
     }
 }

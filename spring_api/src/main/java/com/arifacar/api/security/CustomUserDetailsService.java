@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (StringUtils.isEmpty(username)) {
-            throw new UsernameNotFoundException("Kullanıcı adı boş olamaz.");
+            throw new UsernameNotFoundException("username can not be null");
         }
 
         User user = userRepository.findTopByUsername(username);

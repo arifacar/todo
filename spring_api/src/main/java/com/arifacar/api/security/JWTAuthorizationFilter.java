@@ -80,18 +80,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                         .getBody()
                         .getSubject();
 
-                String [] tokenData = tokenString.split(TOKEN_SEPARATOR);
-
-                /*if(tokenData.length != 3){
-                    throw new MalformedJwtException("Token Data Corrupted!");
-                }*/
-
                 LoginInfo loginInfo = userService.getUserLoginInfo(token);
                 if (loginInfo != null) {
                     User user = userService.findUserById(loginInfo.getUserId());
                     setFirebaseToken(user, request);
                     return new UsernamePasswordAuthenticationToken(user.getUsername(), null, new ArrayList<>());
                 }
+
                 return null;
 
             } catch (ExpiredJwtException exception) {
@@ -121,32 +116,20 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     /**
      *
-     * @param request       HttpRequest Object
-     * @param id            Used in Token
-     * @param userId        Persisted User Id
-     * @param userService   UserService object to save token
+     * @param request
+     * @param username
+     * @param userId
+     * @param userService
+     * @return
      */
-    public static String auth(HttpServletRequest request, String id,  Long userId, UserService userService){
+    public static String auth(HttpServletRequest request, String username,  Long userId, UserService userService){
         String token = Jwts.builder()
-                .setSubject(id +
-                        JWTAuthorizationFilter.TOKEN_SEPARATOR+
-                        request.getHeader(DEVICE_INFO_HEADER))
+                .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRE))
                 .signWith(SignatureAlgorithm.HS512, TOKEN_SECRET)
                 .compact();
-        LoginInfo loginInfo = saveLoginInfo(token,
-                request.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER),
-                userId, userService);
-        userService.saveUserLoginInfo(loginInfo);
+        userService.saveLoginInfo(token, request.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER), userId);
         return token;
     }
 
-    private static LoginInfo saveLoginInfo(String token, String deviceInfo, Long userId, UserService userService) {
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setAuthToken(token);
-        loginInfo.setDate(new Timestamp(System.currentTimeMillis()));
-        loginInfo.setDeviceInfo(deviceInfo);
-        loginInfo.setUserId(userId);
-        return userService.saveUserLoginInfo(loginInfo);
-    }
 }

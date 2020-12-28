@@ -21,7 +21,7 @@ import java.io.IOException;
 @Component
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
-    private com.arifacar.service.user.UserService userService;
+    private final UserService userService;
 
     public CustomLogoutSuccessHandler(UserService userService) {
         this.userService = userService;
@@ -35,11 +35,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-
-        String[] tokenData = tokenString.split(JWTAuthorizationFilter.TOKEN_SEPARATOR);
-        if (tokenData.length != 3) {
-            throw new MalformedJwtException("Token Data Corrupted!");
-        }
 
         userService.deleteLoginInfoByAuthToken(token);
         GenericResponse genericResponse = new GenericResponse();

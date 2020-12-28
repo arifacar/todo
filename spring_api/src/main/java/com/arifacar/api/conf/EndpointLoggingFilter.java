@@ -5,8 +5,8 @@ import com.arifacar.api.util.ResponseWrapper;
 import com.arifacar.domain.model.constants.Constants;
 import com.arifacar.domain.model.generic.GenericResponse;
 import com.arifacar.domain.model.service.log.RestLog;
-import com.arifacar.domain.util.LoggerUtil;
 import com.arifacar.domain.util.PropertyUtil;
+import com.arifacar.service.util.LoggerUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -83,7 +83,6 @@ public class EndpointLoggingFilter implements Filter {
 
     private void processResponse(HttpServletRequest request, ResponseWrapper responseWrapper) {
         try {
-            String maskingLabelJSON = propertyUtil.getApplicationProperty("masking.label");
 
             final String stTime = ThreadContext.get("start-time");
 
@@ -94,13 +93,13 @@ public class EndpointLoggingFilter implements Filter {
                 return;
             }
 
-            RestLog restLog = getRestLog(request, maskingLabelJSON);
+            RestLog restLog = getRestLog(request);
 
             if (!StringUtils.isEmpty(request.getQueryString())) {
                 restLog.setQueryParams(objectMapper.writeValueAsString(request.getQueryString()));
             }
 
-            restLog.setRequestBody(getRequestBody(maskingLabelJSON));
+            restLog.setRequestBody(ThreadContext.get("request-entity"));
 
             byte[] copy = responseWrapper.getCopy();
             String responseStr = new String(copy, responseWrapper.getCharacterEncoding());
@@ -108,9 +107,7 @@ public class EndpointLoggingFilter implements Filter {
             setResponse(restLog, responseStr);
             restLog.setInstallationId(request.getHeader(INSTALLATION_ID));
 
-            loggerUtil.addLog(restLog);
-
-            log.debug(restLog);
+            loggerUtil.logDebug(restLog);
         } catch (Exception e) {
             loggerUtil.logError(this.getClass(), Constants.APP_NAME + "filter",
                     "Something went wrong on rest conversion", e);
@@ -150,7 +147,7 @@ public class EndpointLoggingFilter implements Filter {
         return requestBody;
     }
 
-    private RestLog getRestLog(HttpServletRequest request, String maskingLabelJSON)
+    private RestLog getRestLog(HttpServletRequest request)
             throws com.fasterxml.jackson.core.JsonProcessingException {
         RestLog restLog = new RestLog();
         String headers = objectMapper.writeValueAsString(getHeaders(request));

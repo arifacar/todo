@@ -65,8 +65,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
 
-
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
@@ -77,15 +75,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
             try {
                 String tokenString = Jwts.parser()
-                        .setSigningKey(TextCodec.BASE64URL.encode(TOKEN_SECRET))
+                        .setSigningKey(TOKEN_SECRET)
                         .parseClaimsJws(token)
                         .getBody()
                         .getSubject();
 
                 String [] tokenData = tokenString.split(TOKEN_SEPARATOR);
-                if(tokenData.length != 3){
+
+                /*if(tokenData.length != 3){
                     throw new MalformedJwtException("Token Data Corrupted!");
-                }
+                }*/
 
                 LoginInfo loginInfo = userService.getUserLoginInfo(token);
                 if (loginInfo != null) {
@@ -127,14 +126,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
      * @param userId        Persisted User Id
      * @param userService   UserService object to save token
      */
-    public static String auth(HttpServletRequest request, String id, Long userId, UserService userService){
+    public static String auth(HttpServletRequest request, String id,  Long userId, UserService userService){
         String token = Jwts.builder()
                 .setSubject(id +
                         JWTAuthorizationFilter.TOKEN_SEPARATOR+
-                        JWTAuthorizationFilter.TOKEN_SEPARATOR+
                         request.getHeader(DEVICE_INFO_HEADER))
                 .setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRE))
-                .signWith(SignatureAlgorithm.HS512, TextCodec.BASE64URL.encode(TOKEN_SECRET))
+                .signWith(SignatureAlgorithm.HS512, TOKEN_SECRET)
                 .compact();
         LoginInfo loginInfo = saveLoginInfo(token,
                 request.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER),
@@ -149,7 +147,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         loginInfo.setDate(new Timestamp(System.currentTimeMillis()));
         loginInfo.setDeviceInfo(deviceInfo);
         loginInfo.setUserId(userId);
-
         return userService.saveUserLoginInfo(loginInfo);
     }
 }

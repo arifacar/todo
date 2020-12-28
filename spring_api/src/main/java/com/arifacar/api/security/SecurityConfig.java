@@ -4,8 +4,8 @@ import com.arifacar.domain.model.constants.ResponseCodes;
 import com.arifacar.domain.model.generic.GenericResponse;
 import com.arifacar.domain.repository.user.LoginInfoRepository;
 import com.arifacar.domain.repository.user.UserRepository;
-import com.arifacar.domain.util.LoggerUtil;
 import com.arifacar.service.user.UserService;
+import com.arifacar.service.util.LoggerUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -73,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
+                .antMatchers("/user/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
@@ -80,20 +81,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), userService))
                 .addFilter(getAuthenticationFilter())
-                // .addFilterAfter(new ApplicationVersionFilter(applicationVersionRepository), JWTAuthorizationFilter.class)
                 .logout()
                 .clearAuthentication(false)
-                .logoutSuccessHandler(new CustomLogoutSuccessHandler(userService, loggerUtil));
-
-
+                .logoutSuccessHandler(new CustomLogoutSuccessHandler(userService));
     }
 
     private String getGenericResponseStr(HttpServletResponse response, RuntimeException authException) throws IOException {
         GenericResponse genericResponse = new GenericResponse();
         genericResponse.setStatusCode(ResponseCodes.FAIL_WITH_POPUP);
-        genericResponse.setStatusDesc("Lutfen tekrar giris yapiniz. ");
+        genericResponse.setStatusDesc("Lutfen tekrar giris yapiniz.");
         genericResponse.setDevelopmentDesc(authException.getLocalizedMessage());
-
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), genericResponse);
         return mapper.writeValueAsString(genericResponse);
@@ -110,9 +107,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager(), userDetailsService);
-        return filter;
+        return new AuthenticationFilter(authenticationManager(), userDetailsService);
     }
-
-
 }

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 abstract public class BaseService {
 
-
     public int getPageSizeCommon() {
         return Integer.parseInt(Utils.getApplicationProperty(Constants.PAGESIZE_COMMON));
     }

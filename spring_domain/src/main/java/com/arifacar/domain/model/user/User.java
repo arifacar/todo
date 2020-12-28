@@ -7,16 +7,13 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Locale;
 
 @Entity
 @Table(name = "T_USER")
@@ -33,33 +30,17 @@ public class User extends BaseEntity implements Serializable {
     @Column(unique = true)
     private String username;
 
-    private String profilePic;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 
     private String email;
 
     @Column(columnDefinition = "boolean default false", nullable = false)
-    private boolean isEmailVerified;
+    private boolean emailVerified;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-
-    @Type(type = "org.hibernate.type.MaterializedClobType")
-    @Lob
-    private String profileStatus;
-
-    private boolean isActive;
-
-    @Column(nullable = false)
-    private boolean privateProfile;
+    private String profilePic;
 
     @CreatedDate
     private Timestamp createDate;
 
-    public void setUsername(String username) {
-        this.username = username.toLowerCase(Locale.ENGLISH);
-    }
-
-    public User(Long id) {
-        this.setId(id);
-    }
 }

@@ -1,0 +1,11 @@
+insert into T_USER (id, name, surname, email, password, username, profile_pic) values
+('1','Arif','Acar','merhaba@arifacar.com','$2a$10$3ETqn5A6HDrBPFI.rTZ1.uiZSXMDJvv9SL61kPZG4V1fb2R8wWooS','arifacar','https://miro.medium.com/fit/c/262/262/1*DjTyHM4vN1E5fufInh5g4g.jpeg'),
+('2','Adam','Moulin','amoulinr8@japanpost.jp','$2a$10$3ETqn5A6HDrBPFI.rTZ1.uiZSXMDJvv9SL61kPZG4V1fb2R8wWooS','amoulinr8','https://robohash.org/eumquifacere.jpg?size=400x400&set=set1'),
+('3','Evvie','Mateo','emateor9@bloomberg.com','$2a$10$3ETqn5A6HDrBPFI.rTZ1.uiZSXMDJvv9SL61kPZG4V1fb2R8wWooS','emateor9','https://robohash.org/etplaceatsapiente.jpg?size=400x400&set=set1'),
+('4','Josias','Carnegie','jcarnegiera@paypal.com','$2a$10$3ETqn5A6HDrBPFI.rTZ1.uiZSXMDJvv9SL61kPZG4V1fb2R8wWooS','jcarnegiera','https://robohash.org/quasiquisconsectetur.jpg?size=400x400&set=set1'),
+('5','Edouard','DeAngelis','edeangelisrb@earthlink.net','$2a$10$3ETqn5A6HDrBPFI.rTZ1.uiZSXMDJvv9SL61kPZG4V1fb2R8wWooS','edeangelisrb','https://robohash.org/idenimcorporis.jpg?size=400x400&set=set1'),
+('6','Gwenore','Dibbe','gdibberc@xinhuanet.com','$2a$10$3ETqn5A6HDrBPFI.rTZ1.uiZSXMDJvv9SL61kPZG4V1fb2R8wWooS','gdibberc','https://robohash.org/doloresdistinctioratione.jpg?size=400x400&set=set1'),
+('7','Hansiain','Haslock(e)','hhaslockerd@go.com','$2a$10$3ETqn5A6HDrBPFI.rTZ1.uiZSXMDJvv9SL61kPZG4V1fb2R8wWooS','hhaslockerd','https://robohash.org/quidemearumoccaecati.jpg?size=400x400&set=set1'),
+('8','Myer','McKevitt','mmckevittre@marriott.com','$2a$10$3ETqn5A6HDrBPFI.rTZ1.uiZSXMDJvv9SL61kPZG4V1fb2R8wWooS','mmckevittre','https://robohash.org/doloresvoluptatemut.jpg?size=400x400&set=set1'),
+('9','Kakalina','Ritson','kritsonrf@webs.com','$2a$10$3ETqn5A6HDrBPFI.rTZ1.uiZSXMDJvv9SL61kPZG4V1fb2R8wWooS','kritsonrf','https://robohash.org/nemoautab.jpg?size=400x400&set=set1'),
+('10','Devlen','McMillian','dmcmillianrg@slate.com','$2a$10$3ETqn5A6HDrBPFI.rTZ1.uiZSXMDJvv9SL61kPZG4V1fb2R8wWooS','dmcmillianrg','https://robohash.org/etrationebeatae.jpg?size=400x400&set=set1');

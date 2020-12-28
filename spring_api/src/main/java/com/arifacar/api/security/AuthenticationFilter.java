@@ -4,11 +4,11 @@ import com.arifacar.domain.model.constants.Constants;
 import com.arifacar.domain.model.constants.ResponseCodes;
 import com.arifacar.domain.model.constants.ResponseMessages;
 import com.arifacar.domain.model.generic.GenericInfoResponse;
+import com.arifacar.domain.model.security.LoginRequest;
 import com.arifacar.domain.model.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 
-@Order(2)
+// @Order(2)
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final CustomUserDetailsService customUserDetailsService;

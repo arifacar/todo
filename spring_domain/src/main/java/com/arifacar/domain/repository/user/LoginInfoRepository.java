@@ -13,4 +13,5 @@ public interface LoginInfoRepository extends CrudRepository<LoginInfo, Long> {
 
     void deleteLoginInfoByAuthToken(String authToken);
 
+    void deleteAllByUserId(Long id);
 }

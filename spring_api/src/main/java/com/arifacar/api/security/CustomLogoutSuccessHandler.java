@@ -2,7 +2,8 @@ package com.arifacar.api.security;
 
 import com.arifacar.domain.model.constants.ResponseCodes;
 import com.arifacar.domain.model.generic.GenericResponse;
-import com.arifacar.domain.util.LoggerUtil;
+import com.arifacar.domain.model.user.LoginInfo;
+import com.arifacar.domain.model.user.User;
 import com.arifacar.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
@@ -22,20 +23,15 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     private com.arifacar.service.user.UserService userService;
 
-    private LoggerUtil loggerUtil;
-
-    public CustomLogoutSuccessHandler(UserService userService, LoggerUtil loggerUtil) {
+    public CustomLogoutSuccessHandler(UserService userService) {
         this.userService = userService;
-        this.loggerUtil = loggerUtil;
     }
 
     @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-                                Authentication authentication) throws IOException {
-
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String token = request.getHeader(JWTAuthorizationFilter.HEADER_STRING);
         String tokenString = Jwts.parser()
-                .setSigningKey(TextCodec.BASE64URL.encode(JWTAuthorizationFilter.TOKEN_SECRET))
+                .setSigningKey(JWTAuthorizationFilter.TOKEN_SECRET)
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();

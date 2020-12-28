@@ -25,4 +25,7 @@ public class Constants {
     public static final long ONE_HOUR_AS_MS = 86400000000L;
 
     public static final String PAGESIZE_COMMON = "pagesize.common";
+
+    public static final String UPLOAD_PROFILE = "profile_pictures";
+    public static final String UPLOAD_OTHER = "other_images";
 }

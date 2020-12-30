@@ -1,6 +1,8 @@
 package com.arifacar.api.rest.common;
 
 import com.arifacar.api.security.UserAdapter;
+import com.arifacar.domain.model.constants.ResponseCodes;
+import com.arifacar.domain.model.generic.GenericInfoResponse;
 import com.arifacar.domain.model.user.User;
 import com.arifacar.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,15 @@ abstract public class BaseController {
         this.userService = userService;
     }
 
-    public String getCurrentUsername() {
+    protected  <T> GenericInfoResponse<T> getSuccessGenericInfoResponse(T response, String desciption) {
+        GenericInfoResponse<T> genericInfoResponse = new GenericInfoResponse<>();
+        genericInfoResponse.setResponse(response);
+        genericInfoResponse.setStatusCode(ResponseCodes.SUCCESS);
+        genericInfoResponse.setStatusDesc(desciption);
+        return genericInfoResponse;
+    }
+
+    protected String getCurrentUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserAdapter) {
@@ -27,7 +37,7 @@ abstract public class BaseController {
         }
     }
 
-    public User getCurrentUser() {
+    protected User getCurrentUser() {
         String username = getCurrentUsername();
         return userService.findByUsername(username);
     }

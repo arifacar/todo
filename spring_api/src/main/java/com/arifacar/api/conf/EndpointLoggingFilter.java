@@ -31,15 +31,14 @@ public class EndpointLoggingFilter implements Filter {
 
     private final LoggerUtil loggerUtil;
     private final ObjectMapper objectMapper;
-    private final PropertyUtil propertyUtil;
     private static final String INSTALLATION_ID = "installationid";
+
     private static Logger log = LogManager.getLogger(com.arifacar.api.conf.EndpointLoggingFilter.class.getName());
 
     @Autowired
     public EndpointLoggingFilter(LoggerUtil loggerUtil, ObjectMapper objectMapper, PropertyUtil propertyUtil) {
         this.loggerUtil = loggerUtil;
         this.objectMapper = objectMapper;
-        this.propertyUtil = propertyUtil;
     }
 
     @Override

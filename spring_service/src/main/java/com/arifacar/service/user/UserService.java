@@ -85,14 +85,14 @@ public class UserService extends BaseService {
     }
 
     public List<User> findAll(int page) {
-        PageRequest pageRequest = PageRequest.of(page - 1, getPageSizeCommon());
+        PageRequest pageRequest = PageRequest.of(page - 1, getCommonPageSize());
         return userRepository.findAll(pageRequest).getContent();
     }
 
     public boolean existUserName(User currentUser, User user) {
         User persistedUser = findByUsername(user.getUsername());
-        if (persistedUser == null || !currentUser.getId().equals(persistedUser.getId()))
-            Assert.isNull(persistedUser, user.getUsername() + " kullanıcı adı başkası tarafından tarafından kullanılıyor.");
+        boolean existUser = persistedUser != null && currentUser.getId().equals(persistedUser.getId());
+        Assert.isTrue(!existUser, user.getUsername() + " kullanıcı adı başkası tarafından tarafından kullanılıyor.");
         return false;
     }
 

@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class PropertyUtil {
 
-    private Environment environment;
+    private static Environment environment;
 
     @Autowired
     public PropertyUtil(Environment environment) {
-        this.environment = environment;
+        PropertyUtil.environment = environment;
     }
 
-    public String getApplicationProperty(String key) {
+    public static String getApplicationProperty(String key) {
         return environment.getProperty(key);
     }
 

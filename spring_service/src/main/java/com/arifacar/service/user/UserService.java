@@ -47,7 +47,7 @@ public class UserService extends BaseService {
         StringUtil.trimUser(user);
 
         if (user.getUsername() != null) {
-            existUserName(currentUser, user);
+            existUserName(user);
             userPersistent.setUsername(user.getUsername());
         }
 
@@ -89,10 +89,9 @@ public class UserService extends BaseService {
         return userRepository.findAll(pageRequest).getContent();
     }
 
-    public boolean existUserName(User currentUser, User user) {
+    public boolean existUserName(User user) {
         User persistedUser = findByUsername(user.getUsername());
-        boolean existUser = persistedUser != null && currentUser.getId().equals(persistedUser.getId());
-        Assert.isTrue(!existUser, user.getUsername() + " kullanıcı adı başkası tarafından tarafından kullanılıyor.");
+        Assert.isTrue(persistedUser == null, user.getUsername() + " kullanıcı adı başkası tarafından tarafından kullanılıyor.");
         return false;
     }
 

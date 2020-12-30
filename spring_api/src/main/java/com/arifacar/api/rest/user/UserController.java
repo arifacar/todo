@@ -49,7 +49,7 @@ public class UserController extends BaseController {
     public GenericInfoResponse<User> delete() {
         User currentUser = getCurrentUser();
         userService.delete(currentUser);
-        return getSuccessGenericInfoResponse(null, "User information has been updated successfully.");
+        return getSuccessGenericInfoResponse(null, "User information has been deleted successfully.");
     }
 
     @GetMapping(value = "/current")
@@ -59,7 +59,7 @@ public class UserController extends BaseController {
 
     @PostMapping(value = "/exist")
     public GenericInfoResponse<Boolean> usernameExist(@RequestBody User user) {
-        boolean exist = userService.existUserName(getCurrentUser(), user);
+        boolean exist = userService.existUserName(user);
         return getSuccessGenericInfoResponse(exist, "username is available");
     }
 

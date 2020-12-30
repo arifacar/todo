@@ -12,7 +12,7 @@ abstract public class BaseController {
 
     protected final String DEFAULT_PASSWORD = "password";
 
-    protected UserService userService;
+    protected final UserService userService;
 
     @Autowired
     public BaseController(UserService userService) {

@@ -1,5 +1,6 @@
 package com.arifacar.api.security;
 
+import com.arifacar.domain.model.constants.Constants;
 import com.arifacar.domain.model.constants.ResponseCodes;
 import com.arifacar.domain.model.generic.GenericResponse;
 import com.arifacar.domain.repository.user.LoginInfoRepository;
@@ -59,31 +60,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .exceptionHandling()
                 .accessDeniedHandler((request, response, accessDeniedException) ->
                         response.getOutputStream().println(getGenericResponseStr(response, accessDeniedException)))
                 .authenticationEntryPoint((request, response, authException) ->
-                        response.getOutputStream().println(getGenericResponseStr(response, authException)))
-                .and()
+                        response.getOutputStream().println(getGenericResponseStr(response, authException))).and()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
-                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .antMatchers("/user/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic()
-                .and()
+                    .antMatchers("/user/save/**").permitAll()
+                    .antMatchers("/user/verifyEmail/**").permitAll()
+                    .antMatchers("/user/exist/**").permitAll()
+                .anyRequest().authenticated().and()
+                .httpBasic().and()
                 .formLogin().disable()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), userService))
                 .addFilter(getAuthenticationFilter())
                 .logout()
                 .clearAuthentication(false)
                 .logoutSuccessHandler(new CustomLogoutSuccessHandler(userService));
+
     }
 
     private String getGenericResponseStr(HttpServletResponse response, RuntimeException authException) throws IOException {
@@ -91,6 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         genericResponse.setStatusCode(ResponseCodes.FAIL_WITH_POPUP);
         genericResponse.setStatusDesc("Lutfen tekrar giris yapiniz.");
         genericResponse.setDevelopmentDesc(authException.getLocalizedMessage());
+        response.setContentType(Constants.APPLICATION_JSON_CHARSET_UTF_8);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), genericResponse);
         return mapper.writeValueAsString(genericResponse);

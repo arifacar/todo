@@ -5,7 +5,6 @@ import com.arifacar.domain.model.user.LoginInfo;
 import com.arifacar.domain.model.user.User;
 import com.arifacar.service.user.UserService;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.impl.TextCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 @EnableAsync
@@ -56,9 +54,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String header = req.getHeader(HEADER_STRING);
 
         if (header == null) {
-            if (chain == null){
-                throw new LoginException();
-            }
             chain.doFilter(req, res);
             return;
         }
@@ -83,7 +78,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                 LoginInfo loginInfo = userService.getUserLoginInfo(token);
                 if (loginInfo != null) {
                     User user = userService.findUserById(loginInfo.getUserId());
-                    setFirebaseToken(user, request);
                     return new UsernamePasswordAuthenticationToken(user.getUsername(), null, new ArrayList<>());
                 }
 
@@ -104,25 +98,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         return null;
     }
 
-    @Async
-    void setFirebaseToken(User user, HttpServletRequest request) {
-        if (user != null) {
-            String firebaseToken = request.getHeader(HEADER_STRING_FIREBASE);
-            if (StringUtils.isEmpty(firebaseToken)){
-                logger.error("Empty Firebase Token, Device:" + request.getHeader(HttpHeaders.USER_AGENT) + "--- User Id: " + user.getId() + " Username: " + user.getUsername());
-            }
-        }
-    }
 
     /**
-     *
      * @param request
      * @param username
      * @param userId
      * @param userService
      * @return
      */
-    public static String auth(HttpServletRequest request, String username,  Long userId, UserService userService){
+    public static String auth(HttpServletRequest request, String username, Long userId, UserService userService) {
         String token = Jwts.builder()
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRE))

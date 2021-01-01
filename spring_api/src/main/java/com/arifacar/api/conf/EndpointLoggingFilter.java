@@ -44,6 +44,12 @@ public class EndpointLoggingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+
+        if (request.getContentType().contains("multipart/form-data")){
+            chain.doFilter(request, response);
+            return;
+        }
+
         updateEncodings(request, response);
 
         HttpServletRequest req = (HttpServletRequest) request;
@@ -56,6 +62,7 @@ public class EndpointLoggingFilter implements Filter {
 
         responseWrapper.flushBuffer();
         processResponse(req, responseWrapper);
+
     }
 
     private void updateEncodings(ServletRequest request, ServletResponse response) {
@@ -174,8 +181,7 @@ public class EndpointLoggingFilter implements Filter {
 
     @Override
     public void destroy() {
-        loggerUtil.logDebug(getClass(), Constants.APP_NAME + "destroy",
-                "destroy filter");
+        loggerUtil.logDebug(getClass(), Constants.APP_NAME + "destroy", "destroy filter");
     }
 
 }

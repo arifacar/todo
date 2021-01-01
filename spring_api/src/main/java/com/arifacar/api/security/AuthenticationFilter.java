@@ -73,7 +73,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader("Token", token);
 
         userService.saveLoginInfo(token, request.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER), userDto.getUser().getId());
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(Constants.APPLICATION_JSON_CHARSET_UTF_8);
         response.getWriter().write(new ObjectMapper().writeValueAsString(getUserGenericInfoResponse(userDto.getUser(), token)));
     }
 
@@ -85,7 +85,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         genericInfoResponse.setStatusCode(ResponseCodes.FAIL_WITH_POPUP);
         genericInfoResponse.setStatusDesc(ResponseMessages.WRONG_USERNAME_OR_PASS);
         genericInfoResponse.setDevelopmentDesc(failed.getMessage());
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(Constants.APPLICATION_JSON_CHARSET_UTF_8);
         response.getWriter().write(new ObjectMapper().writeValueAsString(genericInfoResponse));
     }
 

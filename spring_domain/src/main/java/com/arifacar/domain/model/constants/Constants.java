@@ -8,6 +8,7 @@ public class Constants {
     }
 
 
+
     public static final String APP_NAME = "JavaMaster.";
     public static final String JAVAMASTER_PACKAGE = "com.arifacar";
 
@@ -26,4 +27,6 @@ public class Constants {
 
     public static final String UPLOAD_PROFILE = "profile_pictures";
     public static final String UPLOAD_OTHER = "other_images";
+
+    public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
 }

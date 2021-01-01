@@ -2,7 +2,6 @@ package com.arifacar.api.rest.user;
 
 import com.arifacar.api.rest.common.BaseController;
 import com.arifacar.api.util.Validator;
-import com.arifacar.domain.model.constants.ResponseCodes;
 import com.arifacar.domain.model.generic.GenericInfoResponse;
 import com.arifacar.domain.model.user.User;
 import com.arifacar.service.user.UserService;
@@ -38,8 +37,15 @@ public class UserController extends BaseController {
     }
 
     @PostMapping(value = "/update")
-    public GenericInfoResponse<User> update(@RequestPart(value = "user", required = false) MultipartFile userAsFile,
-                                            @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
+    public GenericInfoResponse<User> update(@RequestBody User user, final HttpServletRequest request) {
+        Validator.validateUpdateUser(user);
+        User updatedUser = userService.update(getCurrentUser(), user, null);
+        return getSuccessGenericInfoResponse(updatedUser, "User information has been updated successfully.");
+    }
+
+    @PostMapping(value = "/updateWithProfile")
+    public GenericInfoResponse<User> updateWithProfile(@RequestPart(value = "user", required = false) MultipartFile userAsFile,
+                                                       @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
         User user = userAsFile != null ? new ObjectMapper().readValue(userAsFile.getBytes(), User.class) : null;
         Validator.validateUpdateUser(user);
         User updatedUser = userService.update(getCurrentUser(), user, image);

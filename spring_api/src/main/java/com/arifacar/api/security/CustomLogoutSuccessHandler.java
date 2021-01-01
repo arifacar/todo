@@ -1,5 +1,6 @@
 package com.arifacar.api.security;
 
+import com.arifacar.domain.model.constants.Constants;
 import com.arifacar.domain.model.constants.ResponseCodes;
 import com.arifacar.domain.model.generic.GenericResponse;
 import com.arifacar.domain.model.user.LoginInfo;
@@ -41,6 +42,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
         genericResponse.setStatusCode(ResponseCodes.SUCCESS_WITH_POPUP);
         genericResponse.setStatusDesc("Tekrar bekleriz :)");
         response.setStatus(HttpStatus.OK.value());
+        response.setContentType(Constants.APPLICATION_JSON_CHARSET_UTF_8);
         response.getWriter().write(new ObjectMapper().writeValueAsString(genericResponse));
 
     }

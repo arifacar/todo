@@ -3,6 +3,7 @@ package com.arifacar.api.conf;
 import com.arifacar.domain.model.constants.ResponseCodes;
 import com.arifacar.domain.model.generic.GenericResponse;
 import com.arifacar.domain.model.generic.TodoApiException;
+import com.arifacar.domain.model.service.exception.LoginException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,20 +72,24 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(genericResponse, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @ExceptionHandler({TodoApiException.class})
-    public ResponseEntity<Object> handleTodoApiException(TodoApiException ex, WebRequest request) {
-        int statusCode = ex.getStatusCode() == 0 ? ResponseCodes.FAIL_WITH_POPUP : ex.getStatusCode();
-
-        GenericResponse genericResponse = getGenericResponse(statusCode, ex.getStatusDesc(), ex.getDevelopmentDesc());
-
-        ex.printStackTrace();
-        return new ResponseEntity<>(genericResponse, new HttpHeaders(), HttpStatus.OK);
-    }
-
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<Object> handleAssertException(IllegalArgumentException ex) {
         GenericResponse genericResponse = getGenericResponse(ResponseCodes.FAIL_WITH_POPUP, ex.getMessage(), null);
         ex.printStackTrace();
+        return new ResponseEntity<>(genericResponse, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @ExceptionHandler({TodoApiException.class})
+    public ResponseEntity<Object> handleTodoApiException(TodoApiException ex, WebRequest request) {
+        int statusCode = ex.getStatusCode() == 0 ? ResponseCodes.FAIL_WITH_POPUP : ex.getStatusCode();
+        GenericResponse genericResponse = getGenericResponse(statusCode, ex.getStatusDesc(), ex.getDevelopmentDesc());
+        ex.printStackTrace();
+        return new ResponseEntity<>(genericResponse, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @ExceptionHandler({LoginException.class})
+    public ResponseEntity<Object> handleLoginException(LoginException ex) {
+        GenericResponse genericResponse = getGenericResponse(ex.getStatusCode(), ex.getStatusDesc(), ex.getDevelopmentDesc());
         return new ResponseEntity<>(genericResponse, new HttpHeaders(), HttpStatus.OK);
     }
 

@@ -8,6 +8,8 @@ import com.arifacar.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.security.auth.login.LoginException;
+
 abstract public class BaseController {
 
     protected final String DEFAULT_PASSWORD = "password";

@@ -2,8 +2,10 @@ package com.arifacar.domain.model.service.exception;
 
 import com.arifacar.domain.model.constants.ResponseCodes;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class LoginException extends RuntimeException {
 
     private int statusCode;
@@ -18,3 +20,6 @@ public class LoginException extends RuntimeException {
         this.developmentDesc = "Lutfen tekrar giris yapiniz. ";
     }
 }
+
+
+

@@ -131,13 +131,18 @@ public class UserService extends BaseService {
     }
 
     public LoginInfo saveLoginInfo(String token, String deviceInfo, Long userId) {
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setAuthToken(token);
-        loginInfo.setDate(new Timestamp(System.currentTimeMillis()));
-        loginInfo.setDeviceInfo(deviceInfo);
-        loginInfo.setUserId(userId);
+        LoginInfo loginInfo = LoginInfo.builder()
+                .authToken(token)
+                .date(new Timestamp(System.currentTimeMillis()))
+                .deviceInfo(deviceInfo)
+                .userId(userId)
+                .build();
+
         return saveUserLoginInfo(loginInfo);
     }
 
+    public User findByUsernameOrEmail(String username, String email) {
+        return userRepository.findTopByUsernameOrEmail(username, email);
+    }
 }
 

@@ -31,6 +31,7 @@ public class UserController extends BaseController {
     @PostMapping(value = "/create")
     public GenericInfoResponse<User> create(@RequestBody User user, final HttpServletRequest request) {
         Validator.validateCreateUser(user, request);
+        Validator.validateUserExists(user, userService);
         user.setPassword(bCryptPasswordEncoder.encode(DEFAULT_PASSWORD));
         User createdUser = userService.create(user);
         return getSuccessGenericInfoResponse(createdUser, "Welcome to Todo-App");

@@ -82,8 +82,8 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({IllegalArgumentException.class})
-    public ResponseEntity<Object> handleAssertException(IllegalArgumentException ex, WebRequest request) {
-        GenericResponse genericResponse = getGenericResponse(ResponseCodes.FAIL_WITH_POPUP, "İşleminizi gerçekleştiremiyoruz.", ex.getMessage());
+    public ResponseEntity<Object> handleAssertException(IllegalArgumentException ex) {
+        GenericResponse genericResponse = getGenericResponse(ResponseCodes.FAIL_WITH_POPUP, ex.getMessage(), null);
         ex.printStackTrace();
         return new ResponseEntity<>(genericResponse, new HttpHeaders(), HttpStatus.OK);
     }

@@ -58,10 +58,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res,
-                                            FilterChain chain, Authentication auth) throws IOException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                            FilterChain chain, Authentication authResult) throws IOException {
 
-        String userName = ((UserAdapter) auth.getPrincipal()).getUsername();
+        String userName = ((UserAdapter) authResult.getPrincipal()).getUsername();
         UserAdapter userDto = (UserAdapter) customUserDetailsService.loadUserByUsername(userName);
 
         String token = Jwts.builder()
@@ -70,13 +70,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .signWith(SignatureAlgorithm.HS512, TOKEN_SECRET)
                 .compact();
 
-        res.addHeader("Token", token);
+        response.addHeader("Token", token);
 
-        userService.saveLoginInfo(token, req.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER), userDto.getUser().getId());
-
-        res.getWriter().write(new ObjectMapper().writeValueAsString(getUserGenericInfoResponse(
-                userDto.getUser(), token)));
-
+        userService.saveLoginInfo(token, request.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER), userDto.getUser().getId());
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(getUserGenericInfoResponse(userDto.getUser(), token)));
     }
 
     @Override
@@ -87,6 +85,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         genericInfoResponse.setStatusCode(ResponseCodes.FAIL_WITH_POPUP);
         genericInfoResponse.setStatusDesc(ResponseMessages.WRONG_USERNAME_OR_PASS);
         genericInfoResponse.setDevelopmentDesc(failed.getMessage());
+        response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(new ObjectMapper().writeValueAsString(genericInfoResponse));
     }
 

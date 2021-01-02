@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
                 .authorizeRequests()
-                    .antMatchers("/user/save/**").permitAll()
+                    .antMatchers("/user/create/**").permitAll()
                     .antMatchers("/user/verifyEmail/**").permitAll()
                     .antMatchers("/user/exist/**").permitAll()
                 .anyRequest().authenticated().and()

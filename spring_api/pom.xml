@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>spring_api</name>
     <description>Demo project for Spring Boot</description>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -142,30 +142,19 @@
     </dependencies>
 
     <build>
+        <finalName>application</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <mainClass>com.arifacar.api.AppApi</mainClass>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>log4j-plugin-processor</id>
                         <goals>
-                            <goal>compile</goal>
+                            <goal>repackage</goal>
                         </goals>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <proc>only</proc>
-                            <annotationProcessors>
-                                <annotationProcessor>
-                                    org.apache.logging.log4j.core.config.plugins.processor.PluginProcessor
-                                </annotationProcessor>
-                            </annotationProcessors>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -10,7 +10,6 @@ import com.arifacar.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,7 +23,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 
-// @Order(2)
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final CustomUserDetailsService customUserDetailsService;

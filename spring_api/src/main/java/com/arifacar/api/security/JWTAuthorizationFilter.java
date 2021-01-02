@@ -1,20 +1,17 @@
 package com.arifacar.api.security;
 
-import com.arifacar.domain.model.service.exception.LoginException;
 import com.arifacar.domain.model.user.LoginInfo;
 import com.arifacar.domain.model.user.User;
 import com.arifacar.service.user.UserService;
+import com.arifacar.service.util.StringUtil;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -53,7 +50,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                                     FilterChain chain) throws IOException, ServletException {
         String header = req.getHeader(HEADER_STRING);
 
-        if (header == null) {
+        if (StringUtil.isNothing(header)) {
             chain.doFilter(req, res);
             return;
         }
@@ -69,13 +66,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         if (token != null) {
 
             try {
-                String tokenString = Jwts.parser()
-                        .setSigningKey(TOKEN_SECRET)
-                        .parseClaimsJws(token)
-                        .getBody()
-                        .getSubject();
 
                 LoginInfo loginInfo = userService.getUserLoginInfo(token);
+
                 if (loginInfo != null) {
                     User user = userService.findUserById(loginInfo.getUserId());
                     return new UsernamePasswordAuthenticationToken(user.getUsername(), null, new ArrayList<>());

@@ -12,8 +12,6 @@ import javax.security.auth.login.LoginException;
 
 abstract public class BaseController {
 
-    protected final String DEFAULT_PASSWORD = "password";
-
     protected final UserService userService;
 
     @Autowired

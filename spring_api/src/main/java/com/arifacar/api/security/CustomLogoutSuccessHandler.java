@@ -31,13 +31,9 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String token = request.getHeader(JWTAuthorizationFilter.HEADER_STRING);
-        String tokenString = Jwts.parser()
-                .setSigningKey(JWTAuthorizationFilter.TOKEN_SECRET)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
 
         userService.deleteLoginInfoByAuthToken(token);
+
         GenericResponse genericResponse = new GenericResponse();
         genericResponse.setStatusCode(ResponseCodes.SUCCESS_WITH_POPUP);
         genericResponse.setStatusDesc("Tekrar bekleriz :)");

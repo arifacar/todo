@@ -7,6 +7,7 @@ import com.arifacar.domain.model.user.User;
 import com.arifacar.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,8 +23,8 @@ public class UserController extends BaseController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        super(userService);
+    public UserController(UserService userService, MessageSource messageSource, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        super(userService, messageSource);
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -33,14 +34,14 @@ public class UserController extends BaseController {
         Validator.validateUserExists(user, userService);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         User createdUser = userService.create(user);
-        return getSuccessGenericInfoResponse(createdUser, "Welcome to Todo-App");
+        return getSuccessGenericInfoResponse(createdUser, getMessage("user.create"));
     }
 
     @PostMapping(value = "/update")
     public GenericInfoResponse<User> update(@RequestBody User user, final HttpServletRequest request) {
         Validator.validateUpdateUser(user);
         User updatedUser = userService.update(getCurrentUser(), user, null);
-        return getSuccessGenericInfoResponse(updatedUser, "User information has been updated successfully.");
+        return getSuccessGenericInfoResponse(updatedUser, getMessage("user.update"));
     }
 
     @PostMapping(value = "/updateWithProfile")
@@ -49,14 +50,14 @@ public class UserController extends BaseController {
         User user = userAsFile != null ? new ObjectMapper().readValue(userAsFile.getBytes(), User.class) : null;
         Validator.validateUpdateUser(user);
         User updatedUser = userService.update(getCurrentUser(), user, image);
-        return getSuccessGenericInfoResponse(updatedUser, "User information has been updated successfully.");
+        return getSuccessGenericInfoResponse(updatedUser, getMessage("user.update"));
     }
 
     @GetMapping(value = "/delete")
     public GenericInfoResponse<User> delete() {
         User currentUser = getCurrentUser();
         userService.delete(currentUser);
-        return getSuccessGenericInfoResponse(null, "User information has been deleted successfully.");
+        return getSuccessGenericInfoResponse(null, getMessage("user.delete"));
     }
 
     @GetMapping(value = "/current")
@@ -67,13 +68,13 @@ public class UserController extends BaseController {
     @PostMapping(value = "/exist")
     public GenericInfoResponse<Boolean> usernameExist(@RequestBody User user) {
         boolean exist = userService.existUserName(user);
-        return getSuccessGenericInfoResponse(exist, "username is available");
+        return getSuccessGenericInfoResponse(exist, getMessage("user.available"));
     }
 
     @GetMapping(value = "/verifyEmail")
     public GenericInfoResponse<User> verifyEmail() {
         userService.verifyEmail(getCurrentUser());
-        return getSuccessGenericInfoResponse(null, "Verification email has been sent. Please check your mailbox.");
+        return getSuccessGenericInfoResponse(null, getMessage("user.verify.email"));
     }
 
     // TODO: will be just admin service

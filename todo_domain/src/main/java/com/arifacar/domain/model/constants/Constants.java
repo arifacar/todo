@@ -3,7 +3,6 @@ package com.arifacar.domain.model.constants;
 
 public class Constants {
 
-
     private Constants() {
         throw new IllegalStateException(ErrorConstants.UTILITY_CLASS);
     }
@@ -29,6 +28,7 @@ public class Constants {
     public static final String UPLOAD_OTHER = "other_images";
 
     public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
+    public static final String UTF_8 = "UTF-8";
 
     public static final String KEY_DELIMETER = "_";
 

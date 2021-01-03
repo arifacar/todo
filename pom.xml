@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.arifacar</groupId>
-    <artifactId>java-master</artifactId>
+    <artifactId>todo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>java-master</name>
-    <description>Java Master Project</description>
+    <name>todo</name>
+    <description>Todo App Project</description>
     <packaging>pom</packaging>
 
     <properties>
@@ -35,8 +35,8 @@
     </dependencies>
 
     <modules>
-        <module>spring_api</module>
-        <module>spring_domain</module>
-        <module>spring_service</module>
+        <module>todo_api</module>
+        <module>todo_domain</module>
+        <module>todo_service</module>
     </modules>
 </project>

@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.arifacar</groupId>
-    <artifactId>spring_domain</artifactId>
+    <artifactId>todo_domain</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring_domain</name>
+    <name>todo_domain</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
 

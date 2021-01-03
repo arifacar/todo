@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.arifacar</groupId>
-    <artifactId>spring_api</artifactId>
+    <artifactId>todo_api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring_api</name>
+    <name>todo_api</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
     <properties>
@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.arifacar</groupId>
-            <artifactId>spring_service</artifactId>
+            <artifactId>todo_service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>com.arifacar</groupId>
-            <artifactId>spring_domain</artifactId>
+            <artifactId>todo_domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

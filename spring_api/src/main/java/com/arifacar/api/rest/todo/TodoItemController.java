@@ -30,13 +30,13 @@ public class TodoItemController extends BaseController {
 
     @PostMapping(value = "/update")
     public GenericInfoResponse<TodoItem> update(@RequestBody TodoItem todoItem) {
-        TodoItem createdTodoItem = todoItemService.update(todoItem);
+        TodoItem createdTodoItem = todoItemService.update(getCurrentUser(), todoItem);
         return getSuccessGenericInfoResponse(createdTodoItem, "Todo item has been updated successfully.");
     }
 
     @PostMapping(value = "/delete")
     public GenericInfoResponse<TodoItem> delete(@RequestBody TodoItem todoItem) {
-        todoItemService.delete(todoItem);
+        todoItemService.delete(getCurrentUser(), todoItem);
         return getSuccessGenericInfoResponse(null, "Todo item has been deleted successfully.");
     }
 

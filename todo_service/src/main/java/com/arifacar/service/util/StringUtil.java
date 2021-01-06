@@ -48,11 +48,11 @@ public class StringUtil {
     }
 
 
-    public static void trimUser(User user){
-        if(user.getName() != null)  user.setName(user.getName().trim());
-        if(user.getSurname() != null) user.setSurname(user.getSurname().trim());
-        if(user.getUsername() != null) user.setUsername(user.getUsername().trim());
-        if(user.getEmail() != null) user.setEmail(user.getEmail().trim());
-        if(user.getProfilePic() != null) user.setProfilePic(user.getProfilePic().trim());
+    public static void trimUser(User user) {
+        if (user.getName() != null) user.setName(user.getName().trim());
+        if (user.getSurname() != null) user.setSurname(user.getSurname().trim());
+        if (user.getUsername() != null) user.setUsername(user.getUsername().trim());
+        if (user.getEmail() != null) user.setEmail(user.getEmail().trim());
+        if (user.getProfilePic() != null) user.setProfilePic(user.getProfilePic().trim());
     }
 }

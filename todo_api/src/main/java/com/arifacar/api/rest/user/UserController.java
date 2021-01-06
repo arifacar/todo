@@ -38,9 +38,10 @@ public class UserController extends BaseController {
     }
 
     @PostMapping(value = "/update")
-    public GenericInfoResponse<User> update(@RequestBody User user, final HttpServletRequest request) {
+    public GenericInfoResponse<User> update(@RequestBody User user) {
         Validator.validateUpdateUser(user);
-        User updatedUser = userService.update(getCurrentUser(), user, null);
+        user.setId(getCurrentUser().getId());
+        User updatedUser = userService.update(user);
         return getSuccessGenericInfoResponse(updatedUser, getMessage("user.update"));
     }
 
@@ -49,7 +50,8 @@ public class UserController extends BaseController {
                                                        @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
         User user = userAsFile != null ? new ObjectMapper().readValue(userAsFile.getBytes(), User.class) : null;
         Validator.validateUpdateUser(user);
-        User updatedUser = userService.update(getCurrentUser(), user, image);
+        user.setId(getCurrentUser().getId());
+        User updatedUser = userService.update(user, image);
         return getSuccessGenericInfoResponse(updatedUser, getMessage("user.update"));
     }
 

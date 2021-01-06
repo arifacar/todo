@@ -3,8 +3,8 @@ package com.arifacar.api.security;
 import com.arifacar.domain.model.constants.Constants;
 import com.arifacar.domain.model.constants.ResponseCodes;
 import com.arifacar.domain.model.generic.GenericResponse;
-import com.arifacar.domain.repository.user.LoginInfoRepository;
 import com.arifacar.domain.repository.user.UserRepository;
+import com.arifacar.service.user.UserLoginService;
 import com.arifacar.service.user.UserService;
 import com.arifacar.service.util.LoggerUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    LoginInfoRepository loginInfoRepository;
+    UserLoginService userLoginService;
 
     @Autowired
     UserRepository userRepository;
@@ -71,17 +71,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
                 .authorizeRequests()
-                    .antMatchers("/user/create/**").permitAll()
-                    .antMatchers("/user/verifyEmail/**").permitAll()
-                    .antMatchers("/user/exist/**").permitAll()
+                .antMatchers("/user/create/**").permitAll()
+                .antMatchers("/user/verifyEmail/**").permitAll()
+                .antMatchers("/user/exist/**").permitAll()
                 .anyRequest().authenticated().and()
                 .httpBasic().and()
                 .formLogin().disable()
-                .addFilter(new JWTAuthorizationFilter(authenticationManager(), userService))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), userService, userLoginService))
                 .addFilter(getAuthenticationFilter())
                 .logout()
                 .clearAuthentication(false)
-                .logoutSuccessHandler(new CustomLogoutSuccessHandler(userService));
+                .logoutSuccessHandler(new CustomLogoutSuccessHandler(userLoginService));
 
     }
 
@@ -107,6 +107,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        return new AuthenticationFilter(authenticationManager(), userDetailsService, userService);
+        return new AuthenticationFilter(authenticationManager(), userDetailsService, userLoginService);
     }
 }

@@ -6,7 +6,7 @@ import com.arifacar.domain.model.constants.ResponseMessages;
 import com.arifacar.domain.model.generic.GenericInfoResponse;
 import com.arifacar.domain.model.security.LoginRequest;
 import com.arifacar.domain.model.user.User;
-import com.arifacar.service.user.UserService;
+import com.arifacar.service.user.UserLoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,14 +26,14 @@ import java.util.ArrayList;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final CustomUserDetailsService customUserDetailsService;
+    private final UserLoginService userLoginService;
 
-    private UserService userService;
     private final String TOKEN_SECRET = "h4of9eh48vmg02nfu30v27yen295hfj65";
 
     public AuthenticationFilter(AuthenticationManager authenticationManager,
-                                CustomUserDetailsService customUserDetailsService, UserService userService) {
+                                CustomUserDetailsService customUserDetailsService, UserLoginService userLoginService) {
         this.customUserDetailsService = customUserDetailsService;
-        this.userService = userService;
+        this.userLoginService = userLoginService;
         super.setAuthenticationManager(authenticationManager);
     }
 
@@ -70,7 +70,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         response.addHeader("Token", token);
 
-        userService.saveLoginInfo(token, request.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER), userDto.getUser().getId());
+        userLoginService.saveLoginInfo(token, request.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER), userDto.getUser().getId());
         response.setContentType(Constants.APPLICATION_JSON_CHARSET_UTF_8);
         response.getWriter().write(new ObjectMapper().writeValueAsString(getUserGenericInfoResponse(userDto.getUser(), token)));
     }

@@ -2,6 +2,7 @@ package com.arifacar.api.security;
 
 import com.arifacar.domain.model.user.LoginInfo;
 import com.arifacar.domain.model.user.User;
+import com.arifacar.service.user.UserLoginService;
 import com.arifacar.service.user.UserService;
 import com.arifacar.service.util.StringUtil;
 import io.jsonwebtoken.*;
@@ -25,23 +26,20 @@ import java.util.ArrayList;
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     UserService userService;
-
-    public static final String TOKEN_SECRET = "h4of9eh48vmg02nfu30v27yen295hfj65";
-    //Token will be expire in a year (365*24*60*60*1000)
-    public static final Long TOKEN_EXPIRE = Long.parseLong("31556952000");
-
-    public static final String NOT_SAVED_USER = "&NOT_SAVED_USER&";
-
-    public static final String HEADER_STRING = "Token";
-    public static final String HEADER_STRING_FIREBASE = "firebaseToken";
-    public static final String TOKEN_SEPARATOR = "/---/";
-    public static final String DEVICE_INFO_HEADER = "User-Agent";
+    UserLoginService userLoginService;
 
     private static final Logger log = LoggerFactory.getLogger(JWTAuthorizationFilter.class);
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager, UserService userService) {
+    public static final String TOKEN_SECRET = "h4of9eh48vmg02nfu30v27yen295hfj65";
+    public static final Long TOKEN_EXPIRE = Long.parseLong("31556952000"); //Token will be expire in a year (365*24*60*60*1000)
+    public static final String HEADER_STRING = "Token";
+    public static final String DEVICE_INFO_HEADER = "User-Agent";
+
+    public JWTAuthorizationFilter(AuthenticationManager authManager, UserService userService,
+                                  UserLoginService userLoginService) {
         super(authManager);
         this.userService = userService;
+        this.userLoginService = userLoginService;
     }
 
     @Override
@@ -64,18 +62,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
-
             try {
-
-                LoginInfo loginInfo = userService.getUserLoginInfo(token);
-
+                LoginInfo loginInfo = userLoginService.getUserLoginInfo(token);
                 if (loginInfo != null) {
-                    User user = userService.findUserById(loginInfo.getUserId());
+                    User user = userService.findById(loginInfo.getUserId());
                     return new UsernamePasswordAuthenticationToken(user.getUsername(), null, new ArrayList<>());
                 }
-
                 return null;
-
             } catch (ExpiredJwtException exception) {
                 log.warn("Request to parse expired JWT : {} failed : {}", token, exception.getMessage());
             } catch (UnsupportedJwtException exception) {
@@ -96,16 +89,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
      * @param request
      * @param username
      * @param userId
-     * @param userService
+     * @param userLoginService
      * @return
      */
-    public static String auth(HttpServletRequest request, String username, Long userId, UserService userService) {
+    public static String auth(HttpServletRequest request, String username, Long userId, UserLoginService userLoginService) {
         String token = Jwts.builder()
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRE))
                 .signWith(SignatureAlgorithm.HS512, TOKEN_SECRET)
                 .compact();
-        userService.saveLoginInfo(token, request.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER), userId);
+        userLoginService.saveLoginInfo(token, request.getHeader(JWTAuthorizationFilter.DEVICE_INFO_HEADER), userId);
         return token;
     }
 

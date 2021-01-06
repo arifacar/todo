@@ -3,13 +3,8 @@ package com.arifacar.api.security;
 import com.arifacar.domain.model.constants.Constants;
 import com.arifacar.domain.model.constants.ResponseCodes;
 import com.arifacar.domain.model.generic.GenericResponse;
-import com.arifacar.domain.model.user.LoginInfo;
-import com.arifacar.domain.model.user.User;
-import com.arifacar.service.user.UserService;
+import com.arifacar.service.user.UserLoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.impl.TextCodec;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -22,17 +17,17 @@ import java.io.IOException;
 @Component
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
-    private final UserService userService;
+    private final UserLoginService userLoginService;
 
-    public CustomLogoutSuccessHandler(UserService userService) {
-        this.userService = userService;
+    public CustomLogoutSuccessHandler(UserLoginService userLoginService) {
+        this.userLoginService = userLoginService;
     }
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String token = request.getHeader(JWTAuthorizationFilter.HEADER_STRING);
 
-        userService.deleteLoginInfoByAuthToken(token);
+        userLoginService.deleteLoginInfoByAuthToken(token);
 
         GenericResponse genericResponse = new GenericResponse();
         genericResponse.setStatusCode(ResponseCodes.SUCCESS_WITH_POPUP);

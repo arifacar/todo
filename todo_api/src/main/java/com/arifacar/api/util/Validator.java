@@ -28,12 +28,14 @@ public class Validator {
     }
 
     public static void validateUpdateUser(User user) {
-        if (user != null && user.getUsername() != null) {
+        Assert.isTrue(user != null, "Something went wrong");
+
+        if (user.getUsername() != null) {
             Assert.isTrue(user.getUsername().matches("^[A-Za-z0-9]+(?:[\\.][A-Za-z0-9]+)*$"),
                     "Username contains some characters that are not allowed");
         }
 
-        if (user != null && !StringUtils.isEmpty(user.getEmail())) {
+        if (!StringUtils.isEmpty(user.getEmail())) {
             Assert.isTrue(user.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}+$"),
                     "Please enter a valid e-mail address.");
         }
